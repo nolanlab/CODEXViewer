@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.8"/>
+	<classpathentry kind="src" path="src"/>
+	<classpathentry kind="lib" path="C:/Program Files/Java/jdk1.8.0_144/lib/tools.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Nikolay/Desktop/fiji-win64/Fiji.app/plugins/Fiji_Plugins-3.1.1.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Nikolay/Downloads/commons-io/commons-io-2.6.jar"/>
+	<classpathentry kind="output" path="bin"/>
+</classpath>
