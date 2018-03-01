@@ -67,25 +67,6 @@ public class ViewerWindow extends StackWindow implements KeyListener {
 		}
         
 		i5d = (Image5D)imp;
-		
-//		Overlay overlay = new Overlay();
-//		File dir = new File(imp.getFileLocation());
-//		if(dir != null) {		  
-//			File[] regFiles = dir.getParentFile().listFiles(t -> t.getName().contains("regions_"+FilenameUtils.removeExtension(dir.getName())));
-//			if(regFiles != null && regFiles.length != 0) {
-//				for(int z = 0; z < regFiles.length; z++) {
-//					ImagePlus im2 = IJ.openImage(regFiles[z].getPath());
-//					ImageRoi imgRoi = new ImageRoi(0, 0, im2.getProcessor());
-//					imgRoi.setNonScalable(true);
-//					imgRoi.setZeroTransparent(true);
-//					imgRoi.setOpacity(1.0);
-//					imgRoi.setPosition(z+1);
-//					overlay.add(imgRoi);
-//				}
-//				imp.setOverlay(overlay);
-//				i5d.setOverlay(overlay);
-//		  	}
-//		}
 
 		if (imp.getNDimensions() != nDimensions) {
 			throw new IllegalArgumentException("Wrong number of dimensions.");

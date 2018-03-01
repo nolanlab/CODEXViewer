@@ -38,7 +38,7 @@ public class CODEX_Viewer implements PlugIn {
     //              int channel number (channel, whose LUT this entry is, starting from 1)
     //              768 bytes: LUT for R, G, B in ascending order
     public static final int tagLUT = 0x004c5554;
-    public static final int tagCB = 0x00432642; // "C&B" for contrast and brightness settings
+    public static final int tagCB  = 0x00432642; // "C&B" for contrast and brightness settings
     public static final int tagTHR = 0x00544852;
     public static final int tagGRA = 0x00475241;
     public static final int tagOVL = 0x004f564c;

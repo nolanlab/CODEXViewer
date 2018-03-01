@@ -34,15 +34,19 @@ public class ChannelPicker extends ChannelControl {
 
 	boolean[] alreadySet;
 	protected Panel subPanel;
+	private Checkbox redCb;
+	private Checkbox greenCb;
+	private Checkbox blueCb;
+	private RangeSlider slider;
+	private Label channelName;
 
 	public ChannelPicker(ViewerWindow win) {
-
 		super();
 
 		this.win = win;
 		this.i5d = (Image5D) win.getImagePlus();
 		this.ij = IJ.getInstance();
-
+		
 		currentChannel = i5d.getCurrentChannel();
 		nChannels = i5d.getNChannels();
 
@@ -59,15 +63,12 @@ public class ChannelPicker extends ChannelControl {
 
 		i5d.setDisplayMode(OVERLAY);
 		
-		//Init all channels to black color when loading the i5d image on viewer. 
+		//Initialize all channels to black color when loading the i5d image on viewer. 
 		for (int i = 0; i < i5d.getNChannels(); i++) {
 			setChannelLut(Color.black, i);
 		}
 
-		/*
-		 * Handling of Key events:
-		 */
-
+		//Handling of Key events
 		addKeyListener(win);
 		addKeyListener(ij);
 		addKeyListener(win);
@@ -79,9 +80,10 @@ public class ChannelPicker extends ChannelControl {
 		alreadySet = new boolean[i5d.getNChannels()];
 		Checkbox arr[][] = new Checkbox[i5d.getNChannels()][3];
 		
-		//Layout
+		//Layout preferences
 		this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 		
+		//Initialize all components & overlay if present
 		initComponents(arr);
 		initOverlay();
 
@@ -98,6 +100,7 @@ public class ChannelPicker extends ChannelControl {
 	
 	/**
 	 * If overlay is present, add to the image5d object
+	 * Create a new slider to adjust opacity of overlay object
 	 */
 	private void initOverlay() {
 
@@ -161,13 +164,11 @@ public class ChannelPicker extends ChannelControl {
 
 	@Override
 	public synchronized void setDisplayMode(int mode) {
-		// TODO Auto-generated method stub
 		super.setDisplayMode(IJ.COMPOSITE);
 	}
 
 	@Override
 	public Dimension getPreferredSize() {
-		// TODO Auto-generated method stub
 		return new Dimension(350, i5d.getNChannels() * 30);
 	}
 
@@ -259,7 +260,7 @@ public class ChannelPicker extends ChannelControl {
 				});
 			});
 
-			//Display channel number
+			//Display channel name if channelNames.txt is present
 			channelName = new Label();
 			if(chNames != null) {
 				channelName.setText(chNames.get(i));
@@ -332,7 +333,7 @@ public class ChannelPicker extends ChannelControl {
 	}
 	
 	/**
-	 * set the channel name from channelNames.txt file
+	 * List the channel names from channelNames.txt file
 	 * @param i
 	 */
 	private List<String> getChannelNames() {
@@ -360,11 +361,4 @@ public class ChannelPicker extends ChannelControl {
 	public void setColor(Color c) {
 
 	}
-
-	private Checkbox redCb;
-	private Checkbox greenCb;
-	private Checkbox blueCb;
-	private RangeSlider slider;
-	private Label channelName;
-
 }
