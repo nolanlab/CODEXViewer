@@ -9,6 +9,7 @@ import ij.gui.Overlay;
 import ij.process.LUT;
 
 import javax.swing.*;
+import javax.swing.GroupLayout.Alignment;
 import javax.swing.event.ChangeEvent;
 
 import org.apache.commons.io.FilenameUtils;
@@ -39,6 +40,9 @@ public class ChannelPicker extends ChannelControl {
 	private Checkbox blueCb;
 	private RangeSlider slider;
 	private Label channelName;
+	private Label channelParametersLabel;
+	private Label opacityLabel;
+	private JSlider opacitySlider;
 
 	public ChannelPicker(ViewerWindow win) {
 		super();
@@ -87,7 +91,8 @@ public class ChannelPicker extends ChannelControl {
 		initComponents(arr);
 		initOverlay();
 
-		this.invalidate();
+		this.revalidate();
+		this.repaint();
 		win.pack();
 	}
 
@@ -108,16 +113,18 @@ public class ChannelPicker extends ChannelControl {
 		File dir = new File(i5d.getFileLocation());
 		if(dir != null) {		  
 			File[] regFiles = dir.getParentFile().listFiles(t -> t.getName().contains("regions_"+FilenameUtils.removeExtension(dir.getName())));
-			if(regFiles != null && regFiles.length != 0) {
-				
-				Label opacityLabel = new Label();
+			if(regFiles != null && regFiles.length != 0) {				
+				opacityLabel = new Label();
 				opacityLabel.setText("Adjust overlay opacity");
+				opacityLabel.setPreferredSize(new Dimension(25, 10));
 				this.add(opacityLabel);
-				JSlider opacitySlider = new JSlider();
+				opacitySlider = new JSlider();
 				opacitySlider.setToolTipText("Overlay opacity");
 				opacitySlider.setMinimum(0);
 				opacitySlider.setMaximum(10);
 				opacitySlider.setValue(10);
+				opacitySlider.setPreferredSize(new Dimension(100, 25));
+				opacitySlider.setOpaque(false);
 				for(int z = 0; z < regFiles.length; z++) {
 					ImagePlus im2 = IJ.openImage(regFiles[z].getPath());
 					ImageRoi imgRoi = new ImageRoi(0, 0, im2.getProcessor());
@@ -175,12 +182,13 @@ public class ChannelPicker extends ChannelControl {
 	ExecutorService es = Executors.newFixedThreadPool(1);
 
 	private void initComponents(Checkbox arr[][]) {
-		List<String> chNames = new ArrayList<>();
-		chNames = getChannelNames();
-		this.add(new Label("Channel Info"));
+		channelParametersLabel = new Label();
+		channelParametersLabel.setText("Channel Parameters");
+		channelParametersLabel.setPreferredSize(new Dimension(25, 10));
+		this.add(channelParametersLabel);
 
 		for (int i = 0; i < i5d.getNChannels(); i++) {
-			JPanel smallP = new JPanel();
+			Panel smallP = new Panel();
 			
 			//Checkboxes for RGB
 			redCb = new Checkbox();
@@ -238,12 +246,13 @@ public class ChannelPicker extends ChannelControl {
 			//Add a range slider after checkbox
 			slider = new RangeSlider();
 			slider.setMinimum(0);
-			//slider.setMaximum((int) Math.pow(2, i5d.getBitDepth()) - 1);
-			slider.setMaximum((int) i5d.getDisplayRangeMax());
+			slider.setMaximum((int) Math.pow(2, i5d.getBitDepth()) - 1);
 			i5d.setPosition(j + 1, i5d.getSlice(), i5d.getFrame());
-			//i5d.resetDisplayRange();
-			slider.setValue(0);
+			i5d.resetDisplayRange();
+			slider.setValue((int) i5d.getDisplayRangeMin());
 			slider.setUpperValue((int) i5d.getDisplayRangeMax());
+			slider.setPreferredSize(new Dimension(250,20));
+			slider.setOpaque(false);
 
 			slider.addChangeListener(e -> {
 //				if (slider.getValueIsAdjusting())
@@ -252,30 +261,18 @@ public class ChannelPicker extends ChannelControl {
 				es.submit(new Runnable() {
 					@Override
 					public void run() {
-						// TODO Auto-generated method stub
 						i5d.setChannel(j + 1);
 						i5d.setDisplayRange(rs.getValue(), rs.getUpperValue());
-						// i5d.updateAndDraw();
 					}
 				});
 			});
-
-			//Display channel name if channelNames.txt is present
-			channelName = new Label();
-			if(chNames != null) {
-				channelName.setText(chNames.get(i));
-			}
-			else {
-				channelName.setText("Channel: "+ (i+1));
-			}
 
 			smallP.setLayout(new BoxLayout(smallP, BoxLayout.X_AXIS));
 			smallP.add(redCb);
 			smallP.add(greenCb);
 			smallP.add(blueCb);
 			smallP.add(slider);
-			smallP.add(channelName);
-
+			smallP.setPreferredSize(new Dimension(300, 5));
 			this.add(smallP);
 		}
 	}
@@ -331,29 +328,6 @@ public class ChannelPicker extends ChannelControl {
 			}
 		});
 	}
-	
-	/**
-	 * List the channel names from channelNames.txt file
-	 * @param i
-	 */
-	private List<String> getChannelNames() {
-		File dir = new File(i5d.getFileLocation());
-		if(dir != null) {
-			String chNames = "channelnames.txt";
-			File[] chFile = dir.getParentFile().listFiles(t -> t.getName().equalsIgnoreCase(chNames));
-			if(chFile != null && chFile.length == 1) {
-				Path filePath = chFile[0].toPath();
-				Charset charset = Charset.defaultCharset();        
-				try {
-					List<String> stringList = Files.readAllLines(filePath, charset);
-					return stringList;
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
-			}
-		}
-		return null;
-	}
 
 	/**
 	 * Override non used method from ChannelControl and do nothing
@@ -361,4 +335,18 @@ public class ChannelPicker extends ChannelControl {
 	public void setColor(Color c) {
 
 	}
+	
+	public Label getChannelParametersLabel() {
+		return channelParametersLabel;
+	}
+	
+	public Label getOpacityLabel() {
+		return opacityLabel;
+	}
+	
+	public JSlider getOpacitySlider() {
+		return opacitySlider;
+	}
+	
+	
 }

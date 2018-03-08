@@ -55,12 +55,9 @@ public class CODEX_Viewer implements PlugIn {
         OpenDialog od = new OpenDialog("Open in CODEXViewer", "");
         String directory = od.getDirectory();
         String name = od.getFileName();
+
         if (name!=null) {
             
-            // TODO: analyze name for -c01z001t001 pattern.
-            // Load images in loop according to this pattern.
-            
-            // Copied from Opener.openTIFF()
             TiffDecoder td = new TiffDecoder(directory, name);
             if (IJ.debugMode) td.enableDebugging();
             FileInfo[] info=null;
@@ -89,7 +86,6 @@ public class CODEX_Viewer implements PlugIn {
                 return;
             }
             
-            // Copied from Opener.openTIFF2()
             ImagePlus imp = null;
             if (info.length>1) { // try to open as stack
                 imp = (new Opener()).openTiffStack(info);
@@ -113,9 +109,7 @@ public class CODEX_Viewer implements PlugIn {
            	
                 // get dimensions:
                 int nChannels = imp.getNChannels()*imp.getNFrames();
-//                int nSlices = imp.getNSlices();
-//                int nFrames = imp.getNFrames();
-            
+                
                 // Copy over the calibration (pixel width, height, depth, frame interval).
                 i5d.setCalibration(imp.getCalibration().copy());
                 boolean[] hasLUT = new boolean[nChannels];    
@@ -289,11 +283,10 @@ public class CODEX_Viewer implements PlugIn {
                 i5d.setCurrentPosition(0, 0, 0, 0, 0);
                 i5d.show();
             } else {
-                // error message
+            	IJ.error("Cannot perform this operation on this file! Please choose a hyperstack file.");
             }
         } else {
-            //error message
+        	//error
         }
-        
     }
 }

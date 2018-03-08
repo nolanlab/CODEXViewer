@@ -6,6 +6,10 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.util.Vector;
 
+import javax.swing.JScrollPane;
+import javax.swing.ScrollPaneConstants;
+import javax.swing.ScrollPaneLayout;
+
 import org.apache.commons.io.FilenameUtils;
 
 import ij.*;
@@ -20,12 +24,16 @@ import ij.measure.*;
 /** ImageWindow for Image5Ds. Has two scrollbars for slice and time and a panel with controls
  * to change the current channel and its color.
  * @author Joachim Walter
+ * 
+ *  Modified to suit the needs of CODEXViewer for FIJI
  */
 public class ViewerWindow extends StackWindow implements KeyListener {
 
     private static final long serialVersionUID = -3196514227677416036L;
     
     protected ChannelControl channelControl;
+    protected ChannelNames channelNames;
+    protected ChannelPanel channelPanel;
     protected ScrollbarWithLabel[] scrollbarsWL;
 	protected Image5D i5d;
 
@@ -93,9 +101,13 @@ public class ViewerWindow extends StackWindow implements KeyListener {
             i5d.getChannelImagePlus(i).setWindow(this);
         }
 
-        // Add channel picker
-        channelControl = new ChannelPicker(this);//new ChannelPicker(this);
-        add(channelControl, ViewerLayout.CHANNEL_SELECTOR);
+        // Add channel panel
+        channelPanel = new ChannelPanel(this);
+        channelControl = channelPanel.getChannelPicker();
+		ScrollPane pane = new ScrollPane();
+        pane.add(channelPanel);
+        pane.setPreferredSize(new Dimension((int) channelPanel.getChannelPicker().getPreferredSize().getWidth()+150,(int) channelPanel.getChannelPicker().getPreferredSize().getHeight()));
+        add(pane, ViewerLayout.CHANNEL_SELECTOR);
         
 		// Add slice selector	
         scrollbarsWL[3] = new ScrollbarWithLabel(Scrollbar.HORIZONTAL, 1, 1, 1, dimensions[3]+1, imp.getDimensionLabel(3));
@@ -127,7 +139,6 @@ public class ViewerWindow extends StackWindow implements KeyListener {
         
 		pack();
 
-		
 		isInitialized = true;	
 
 		updateSliceSelector();	
@@ -203,8 +214,6 @@ public class ViewerWindow extends StackWindow implements KeyListener {
         ij.getProgressBar().addKeyListener(this); // Sub-component of the statusbar of ImageJ.
     /* ----------------------------------------------------------------------------
      */       
-        
-        
 	}
 
 	
