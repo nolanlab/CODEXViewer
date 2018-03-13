@@ -1,3 +1,4 @@
+package codexviewer.gui;
 import java.awt.FlowLayout;
 import java.awt.Panel;
 import javax.swing.BoxLayout;

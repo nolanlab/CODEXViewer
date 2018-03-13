@@ -1,9 +1,15 @@
+package codexviewer.i5d;
 
 
 import java.awt.*;
 import java.awt.image.*;
 import java.lang.reflect.Array;
 
+import codexviewer.cal.ChannelCalibration;
+import codexviewer.cal.ChannelDisplayProperties;
+import codexviewer.gui.ChannelControl;
+import codexviewer.gui.ViewerCanvas;
+import codexviewer.gui.ViewerWindow;
 import ij.*;
 import ij.gui.*;
 import ij.io.*;

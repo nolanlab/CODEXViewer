@@ -1,3 +1,4 @@
+package codexviewer.gui;
 
 
 import java.awt.*;
@@ -12,6 +13,8 @@ import javax.swing.ScrollPaneLayout;
 
 import org.apache.commons.io.FilenameUtils;
 
+import codexviewer.i5d.ChannelImagePlus;
+import codexviewer.i5d.Image5D;
 import ij.*;
 import ij.gui.*;
 import ij.measure.*;

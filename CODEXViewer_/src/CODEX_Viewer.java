@@ -20,6 +20,9 @@ import java.io.InputStream;
 import java.util.Arrays;
 import java.util.Properties;
 
+import codexviewer.cal.ChannelCalibration;
+import codexviewer.cal.ChannelDisplayProperties;
+import codexviewer.i5d.Image5D;
 import fiji.stacks.Hyperstack_rearranger;
 
 

@@ -1,3 +1,5 @@
+package codexviewer.gui;
+
 import ij.*;
 import ij.gui.*;
 import ij.plugin.*;
@@ -5,6 +7,9 @@ import ij.plugin.*;
 import java.awt.*;
 import java.awt.event.*;
 import java.awt.image.*;
+
+import codexviewer.cal.ChannelDisplayProperties;
+import codexviewer.i5d.*;
 
 /*
  * Created on 15.05.2005

@@ -1,3 +1,4 @@
+package codexviewer.gui;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Label;
@@ -13,6 +14,7 @@ import java.util.List;
 import javax.swing.BoxLayout;
 import javax.swing.JPanel;
 
+import codexviewer.i5d.Image5D;
 import ij.IJ;
 import ij.ImageJ;
 

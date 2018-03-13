@@ -1,3 +1,4 @@
+package codexviewer.gui;
 
 
 import ij.CompositeImage;
@@ -13,6 +14,9 @@ import javax.swing.GroupLayout.Alignment;
 import javax.swing.event.ChangeEvent;
 
 import org.apache.commons.io.FilenameUtils;
+
+import codexviewer.cal.ChannelDisplayProperties;
+import codexviewer.i5d.*;
 
 import java.awt.*;
 import java.awt.event.ItemEvent;
