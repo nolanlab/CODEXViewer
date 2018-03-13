@@ -1,5 +1,5 @@
 package codexviewer.gui;
-import java.awt.FlowLayout;
+
 import java.awt.Panel;
 import javax.swing.BoxLayout;
 
@@ -20,7 +20,6 @@ public class ChannelPanel extends Panel {
         
         
         this.setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
-        //this.setLayout(new FlowLayout());
         this.add(channelControl);
         this.add(channelNames);
         this.revalidate();
